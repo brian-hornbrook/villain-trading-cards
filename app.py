@@ -25,7 +25,7 @@ db.session.commit()
 
 @app.route("/")
 def villains_cards():
-  return render_template("villain.html")
+  return render_template("villain.html", villains=Villain.query.all())
 
 @app.route("/add", methods=["GET"])
 def add_villain():
