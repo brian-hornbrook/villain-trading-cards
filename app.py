@@ -26,11 +26,19 @@ def villain_cards():
   return app.send_static_file("villain.html")
 
 # Villains
-@app.route("/api/villains", methods=["GET"])
+@app.route("/api/villains/", methods=["GET"])
 def get_villains():
 	villains = Villain.query.all()
 	data = []
-	return
+	for villain in villains:
+		data.append({
+			"name": villain.name,
+			"description": villain.description,
+			"interests": villain.interests,
+			"url": villain.url,
+			"date_added": villain.date_added
+		})
+	return jsonify(data)
 
 @app.route("/add")
 def add():
@@ -73,7 +81,7 @@ def add_villain():
     new_villain = Villain(name=name,description=description, interests=interests, url=url)
     db.session.add(new_villain)
     db.session.commit()
-    return
+    return jsonify({"status": "success"})
 
 @app.route("/api/villains/delete", methods=["POST"])
 def delete_villain():
@@ -82,7 +90,7 @@ def delete_villain():
   if villain:
     db.session.delete(villain)
     db.session.commit()
-    return
+    return jsonify({"status": "sucess"})
   else:
     return jsonify({"errors": ["Oops! A villain with that name doesn't exist!"]})
 

@@ -186,3 +186,10 @@ body {
   .form-input {
       margin-left: 20px;
   }
+  
+  .error {
+    margin: 10px;
+    background: red;
+    color: white;
+    padding: 10px;
+  }
