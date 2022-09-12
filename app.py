@@ -20,7 +20,8 @@ class Villain(db.Model):
 db.create_all()
 db.session.commit()
 
-#### Serving Static Files
+
+### Serving Static Files
 @app.route("/")
 def villain_cards():
   return app.send_static_file("villain.html")
@@ -35,7 +36,7 @@ def get_villains():
 			"name": villain.name,
 			"description": villain.description,
 			"interests": villain.interests,
-			"url": villain.url,
+			"url": "https://s3.amazonaws.com/media.skillcrush.com/skillcrush/wp-content/uploads/2019/09/impostrasindrome.jpg",
 			"date_added": villain.date_added
 		})
 	return jsonify(data)
@@ -72,6 +73,7 @@ def add_villain():
     errors.append("Oops! Looks like you forgot an image!")
   
   villain = Villain.query.filter_by(name=name).first()
+		# print(f'name = ***{name}***')
   if villain:
     errors.append("Oops! A villain with that name already exists!")
   
@@ -85,7 +87,7 @@ def add_villain():
 
 @app.route("/api/villains/delete", methods=["POST"])
 def delete_villain():
-  name = request.form.get("name", "")
+  name = request.form.get("name")
   villain = Villain.query.filter_by(name=name).first()
   if villain:
     db.session.delete(villain)
@@ -103,4 +105,4 @@ def get_endpoints():
 	}
 	return jsonify(endpoints)
 
-app.run(host='0.0.0.0', port=8000)
+app.run(host='0.0.0.0', port=5000)
